@@ -28,6 +28,12 @@ mod adder {
         accumulator: accumulator::Accumulator,
     }
 
+    #[derive(Debug, PartialEq, Eq, scale::Encode)]
+    #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
+    pub enum Error {
+        MyError,
+    }
+
     impl Adder {
         /// Creates a new adder from the given accumulator.
         #[ink(constructor)]
@@ -39,6 +45,12 @@ mod adder {
         #[ink(message)]
         pub fn inc(&mut self, by: i32) {
             self.accumulator.inc(by)
+        }
+
+        #[ink(message)]
+        pub fn rinc(&mut self, by: i32) -> Result<(), Error> {
+            self.accumulator.inc(by);
+            Ok(())
         }
     }
 }
